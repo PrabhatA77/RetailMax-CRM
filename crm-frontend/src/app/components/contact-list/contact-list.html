@@ -1,0 +1,15 @@
+<h2>Contacts</h2>
+
+<form (ngSubmit)="addContact()">
+  <input [(ngModel)]="newContact.name" name="name" placeholder="Name" required />
+  <input [(ngModel)]="newContact.email" name="email" placeholder="Email" required />
+  <input [(ngModel)]="newContact.phone" name="phone" placeholder="Phone" />
+  <input [(ngModel)]="newContact.company" name="company" placeholder="Company" />
+  <button type="submit">Add Contact</button>
+</form>
+
+<ul>
+  @for (contact of contacts; track contact.id) {
+    <li>{{ contact.name }} — {{ contact.email }} ({{ contact.company }})</li>
+  }
+</ul>
