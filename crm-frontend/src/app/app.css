@@ -1,0 +1,27 @@
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #ddd;
+  font-family: system-ui, sans-serif;
+}
+
+.brand {
+  font-weight: 700;
+  margin-right: auto;
+}
+
+nav a {
+  text-decoration: none;
+  color: #444;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+nav a.active {
+  background: #e8f0fe;
+  color: #1a56c4;
+}

@@ -1,0 +1,89 @@
+:host {
+  display: block;
+  max-width: 1100px;
+  margin: 1rem auto 2rem;
+  font-family: system-ui, sans-serif;
+}
+
+.cards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  flex: 1;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.card .value {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.card .label {
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.card.warn {
+  background: #fff8e1;
+  border-color: #ffd166;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.4rem 0;
+}
+
+.bar-label {
+  width: 120px;
+}
+
+.bar-track {
+  flex: 1;
+  height: 18px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #4a90d9;
+  transition: width 0.3s;
+}
+
+.bar-fill[data-status='NEW'] {
+  background: #7aa7f0;
+}
+.bar-fill[data-status='CONTACTED'] {
+  background: #f5c542;
+}
+.bar-fill[data-status='NEGOTIATION'] {
+  background: #f08c42;
+}
+.bar-fill[data-status='CLOSED'] {
+  background: #5cb85c;
+}
+.bar-fill.company {
+  background: #8e7cc3;
+}
+
+.bar-count {
+  width: 30px;
+  text-align: right;
+}
+
+.error {
+  color: #b00020;
+}

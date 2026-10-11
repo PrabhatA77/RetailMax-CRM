@@ -1,0 +1,50 @@
+<h2>Reports</h2>
+
+@if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+}
+
+@if (summary(); as s) {
+  <div class="cards">
+    <div class="card">
+      <span class="value">{{ s.totalContacts }}</span>
+      <span class="label">Total contacts</span>
+    </div>
+    <div class="card">
+      <span class="value">{{ s.closedContacts }}</span>
+      <span class="label">Closed</span>
+    </div>
+    <div class="card">
+      <span class="value">{{ s.conversionRate }}%</span>
+      <span class="label">Conversion rate</span>
+    </div>
+    <div class="card warn">
+      <span class="value">{{ s.needsFollowUp }}</span>
+      <span class="label">Need follow-up</span>
+    </div>
+  </div>
+
+  <h3>Contacts by status</h3>
+  @for (row of statusRows(); track row.value) {
+    <div class="bar-row">
+      <span class="bar-label">{{ row.label }}</span>
+      <div class="bar-track">
+        <div class="bar-fill" [attr.data-status]="row.value" [style.width.%]="row.percent"></div>
+      </div>
+      <span class="bar-count">{{ row.count }}</span>
+    </div>
+  }
+
+  <h3>Top companies</h3>
+  @for (row of companyRows(); track row.company) {
+    <div class="bar-row">
+      <span class="bar-label">{{ row.company }}</span>
+      <div class="bar-track">
+        <div class="bar-fill company" [style.width.%]="row.percent"></div>
+      </div>
+      <span class="bar-count">{{ row.count }}</span>
+    </div>
+  } @empty {
+    <p>No company data yet. Add a company to your contacts.</p>
+  }
+}
