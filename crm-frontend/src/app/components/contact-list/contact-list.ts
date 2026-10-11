@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ContactService, Contact, ContactStatus, CONTACT_STATUSES } from '../../services/contact';
@@ -6,7 +7,7 @@ import { ContactService, Contact, ContactStatus, CONTACT_STATUSES } from '../../
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './contact-list.html',
   styleUrl: './contact-list.css'
 })
@@ -18,12 +19,13 @@ export class ContactList implements OnInit {
   editingId = signal<number | null>(null);
   statusFilter = signal<ContactStatus | 'ALL'>('ALL');
 
-  // Recalculates automatically whenever contacts or statusFilter change (like useMemo)
   filteredContacts = computed(() => {
     const filter = this.statusFilter();
     const all = this.contacts();
     return filter === 'ALL' ? all : all.filter(c => c.status === filter);
   });
+
+  followUpCount = computed(() => this.contacts().filter(c => c.needsFollowUp).length);
 
   // Form fields
   name = signal('');

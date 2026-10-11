@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "CONTACTS")
 public class Contact {
@@ -26,6 +28,13 @@ public class Contact {
 
     @Enumerated(EnumType.STRING)
     private ContactStatus status = ContactStatus.NEW;
+
+    // Set automatically by the backend whenever the status changes (automation rule 1)
+    private LocalDateTime statusChangedAt;
+
+    // Calculated on read (automation rule 2), not stored in the database
+    @Transient
+    private boolean needsFollowUp;
 
     public Contact() {}
 
@@ -50,4 +59,10 @@ public class Contact {
         return status == null ? ContactStatus.NEW : status;
     }
     public void setStatus(ContactStatus status) { this.status = status; }
+
+    public LocalDateTime getStatusChangedAt() { return statusChangedAt; }
+    public void setStatusChangedAt(LocalDateTime statusChangedAt) { this.statusChangedAt = statusChangedAt; }
+
+    public boolean isNeedsFollowUp() { return needsFollowUp; }
+    public void setNeedsFollowUp(boolean needsFollowUp) { this.needsFollowUp = needsFollowUp; }
 }

@@ -18,6 +18,8 @@ export interface Contact {
   phone?: string;
   company?: string;
   status?: ContactStatus;
+  statusChangedAt?: string | null;
+  needsFollowUp?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

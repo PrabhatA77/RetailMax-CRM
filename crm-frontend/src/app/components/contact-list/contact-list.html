@@ -15,6 +15,10 @@
   <p class="error">{{ errorMessage() }}</p>
 }
 
+@if (followUpCount() > 0) {
+  <p class="banner">{{ followUpCount() }} contact(s) need a follow-up (no recent status change).</p>
+}
+
 <div class="filter">
   <label>
     Filter by status:
@@ -35,12 +39,13 @@
       <th>Phone</th>
       <th>Company</th>
       <th>Status</th>
+      <th>Last status change</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     @for (contact of filteredContacts(); track contact.id) {
-      <tr>
+      <tr [class.follow-up]="contact.needsFollowUp">
         <td>{{ contact.name }}</td>
         <td>{{ contact.email }}</td>
         <td>{{ contact.phone }}</td>
@@ -56,6 +61,16 @@
               <option [value]="s.value">{{ s.label }}</option>
             }
           </select>
+          @if (contact.needsFollowUp) {
+            <span class="badge">Follow up</span>
+          }
+        </td>
+        <td>
+          @if (contact.statusChangedAt) {
+            {{ contact.statusChangedAt | date: 'dd MMM yyyy, HH:mm' }}
+          } @else {
+            —
+          }
         </td>
         <td>
           <button type="button" (click)="edit(contact)">Edit</button>
@@ -63,7 +78,7 @@
         </td>
       </tr>
     } @empty {
-      <tr><td colspan="6">No contacts found.</td></tr>
+      <tr><td colspan="7">No contacts found.</td></tr>
     }
   </tbody>
 </table>
