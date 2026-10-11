@@ -2,7 +2,9 @@ package com.prabhat.crm.controller;
 
 import com.prabhat.crm.model.Contact;
 import com.prabhat.crm.service.ContactService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,16 +27,18 @@ public class ContactController {
     }
 
     @PostMapping
-    public Contact createContact(@RequestBody Contact contact) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Contact createContact(@Valid @RequestBody Contact contact) {
         return contactService.createContact(contact);
     }
 
     @PutMapping("/{id}")
-    public Contact updateContact(@PathVariable Long id, @RequestBody Contact contact) {
+    public Contact updateContact(@PathVariable Long id, @Valid @RequestBody Contact contact) {
         return contactService.updateContact(id, contact);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteContact(@PathVariable Long id) {
         contactService.deleteContact(id);
     }

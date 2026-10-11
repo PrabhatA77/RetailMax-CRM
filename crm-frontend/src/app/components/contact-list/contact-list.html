@@ -1,15 +1,44 @@
 <h2>Contacts</h2>
 
-<form (ngSubmit)="addContact()">
-  <input [(ngModel)]="newContact.name" name="name" placeholder="Name" required />
-  <input [(ngModel)]="newContact.email" name="email" placeholder="Email" required />
-  <input [(ngModel)]="newContact.phone" name="phone" placeholder="Phone" />
-  <input [(ngModel)]="newContact.company" name="company" placeholder="Company" />
-  <button type="submit">Add Contact</button>
+<form (ngSubmit)="save()" autocomplete="off">
+  <input [(ngModel)]="name" name="contactName" placeholder="Name" autocomplete="off" />
+  <input [(ngModel)]="email" name="contactEmail" placeholder="Email" autocomplete="off" />
+  <input [(ngModel)]="phone" name="contactPhone" placeholder="Phone" autocomplete="off" />
+  <input [(ngModel)]="company" name="contactCompany" placeholder="Company" autocomplete="off" />
+  <button type="submit">{{ editingId() === null ? 'Add Contact' : 'Save Changes' }}</button>
+  @if (editingId() !== null) {
+    <button type="button" (click)="cancelEdit()">Cancel</button>
+  }
 </form>
 
-<ul>
-  @for (contact of contacts; track contact.id) {
-    <li>{{ contact.name }} — {{ contact.email }} ({{ contact.company }})</li>
-  }
-</ul>
+@if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+}
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Company</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (contact of contacts(); track contact.id) {
+      <tr>
+        <td>{{ contact.name }}</td>
+        <td>{{ contact.email }}</td>
+        <td>{{ contact.phone }}</td>
+        <td>{{ contact.company }}</td>
+        <td>
+          <button type="button" (click)="edit(contact)">Edit</button>
+          <button type="button" (click)="remove(contact)">Delete</button>
+        </td>
+      </tr>
+    } @empty {
+      <tr><td colspan="5">No contacts yet.</td></tr>
+    }
+  </tbody>
+</table>

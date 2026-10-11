@@ -1,5 +1,6 @@
 package com.prabhat.crm.service;
 
+import com.prabhat.crm.exception.ResourceNotFoundException;
 import com.prabhat.crm.model.Contact;
 import com.prabhat.crm.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ContactService {
 
     public Contact getContactById(Long id) {
         return contactRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Contact not found with id: " + id));
     }
 
     public Contact createContact(Contact contact) {
@@ -36,6 +37,9 @@ public class ContactService {
     }
 
     public void deleteContact(Long id) {
+        if (!contactRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Contact not found with id: " + id);
+        }
         contactRepository.deleteById(id);
     }
 }

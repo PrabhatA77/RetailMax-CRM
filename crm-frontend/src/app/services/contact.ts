@@ -23,4 +23,12 @@ export class ContactService {
   create(contact: Contact): Observable<Contact> {
     return this.http.post<Contact>(this.baseUrl, contact);
   }
+
+  update(id: number, contact: Contact): Observable<Contact> {
+    return this.http.put<Contact>(`${this.baseUrl}/${id}`, contact);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }
