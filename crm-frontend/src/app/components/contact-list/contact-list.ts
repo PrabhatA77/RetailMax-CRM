@@ -1,7 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ContactService, Contact } from '../../services/contact';
+import { ContactService, Contact, ContactStatus, CONTACT_STATUSES } from '../../services/contact';
 
 @Component({
   selector: 'app-contact-list',
@@ -11,10 +11,19 @@ import { ContactService, Contact } from '../../services/contact';
   styleUrl: './contact-list.css'
 })
 export class ContactList implements OnInit {
-  // State lives in signals so Angular knows when to re-render (like useState in React)
+  statuses = CONTACT_STATUSES;
+
   contacts = signal<Contact[]>([]);
   errorMessage = signal('');
   editingId = signal<number | null>(null);
+  statusFilter = signal<ContactStatus | 'ALL'>('ALL');
+
+  // Recalculates automatically whenever contacts or statusFilter change (like useMemo)
+  filteredContacts = computed(() => {
+    const filter = this.statusFilter();
+    const all = this.contacts();
+    return filter === 'ALL' ? all : all.filter(c => c.status === filter);
+  });
 
   // Form fields
   name = signal('');
@@ -71,6 +80,20 @@ export class ContactList implements OnInit {
 
   cancelEdit(): void {
     this.resetForm();
+  }
+
+  changeStatus(contact: Contact, status: ContactStatus): void {
+    if (contact.id === undefined) return;
+    this.errorMessage.set('');
+
+    this.contactService.updateStatus(contact.id, status).subscribe({
+      next: updated =>
+        this.contacts.update(list => list.map(c => (c.id === updated.id ? updated : c))),
+      error: (err: HttpErrorResponse) => {
+        this.errorMessage.set(this.extractError(err));
+        this.loadContacts();
+      }
+    });
   }
 
   remove(contact: Contact): void {

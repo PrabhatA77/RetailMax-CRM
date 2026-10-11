@@ -2,6 +2,7 @@ package com.prabhat.crm.service;
 
 import com.prabhat.crm.exception.ResourceNotFoundException;
 import com.prabhat.crm.model.Contact;
+import com.prabhat.crm.model.ContactStatus;
 import com.prabhat.crm.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class ContactService {
     }
 
     public Contact createContact(Contact contact) {
+        contact.setStatus(ContactStatus.NEW); // every new lead starts at the beginning of the pipeline
         return contactRepository.save(contact);
     }
 
@@ -33,6 +35,12 @@ public class ContactService {
         contact.setEmail(updatedContact.getEmail());
         contact.setPhone(updatedContact.getPhone());
         contact.setCompany(updatedContact.getCompany());
+        return contactRepository.save(contact);
+    }
+
+    public Contact updateStatus(Long id, ContactStatus status) {
+        Contact contact = getContactById(id);
+        contact.setStatus(status);
         return contactRepository.save(contact);
     }
 

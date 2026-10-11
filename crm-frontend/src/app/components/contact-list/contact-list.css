@@ -1,6 +1,6 @@
 :host {
   display: block;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 2rem auto;
   font-family: system-ui, sans-serif;
 }
@@ -21,6 +21,10 @@ button {
   cursor: pointer;
 }
 
+.filter {
+  margin-bottom: 0.75rem;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -31,6 +35,25 @@ td {
   text-align: left;
   padding: 0.5rem;
   border-bottom: 1px solid #ddd;
+}
+
+select.status {
+  padding: 0.25rem 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+select.status[data-status='NEW'] {
+  background: #e8f0fe;
+}
+select.status[data-status='CONTACTED'] {
+  background: #fff4d6;
+}
+select.status[data-status='NEGOTIATION'] {
+  background: #ffe4cc;
+}
+select.status[data-status='CLOSED'] {
+  background: #d9f2dd;
 }
 
 .error {

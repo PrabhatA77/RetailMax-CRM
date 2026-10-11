@@ -24,6 +24,9 @@ public class Contact {
     private String phone;
     private String company;
 
+    @Enumerated(EnumType.STRING)
+    private ContactStatus status = ContactStatus.NEW;
+
     public Contact() {}
 
     // Getters and setters
@@ -41,4 +44,10 @@ public class Contact {
 
     public String getCompany() { return company; }
     public void setCompany(String company) { this.company = company; }
+
+    // Older rows have no status in the DB yet, so treat "empty" as NEW
+    public ContactStatus getStatus() {
+        return status == null ? ContactStatus.NEW : status;
+    }
+    public void setStatus(ContactStatus status) { this.status = status; }
 }
