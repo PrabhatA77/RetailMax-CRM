@@ -18,10 +18,10 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${crm.auth.default-username:admin}")
+    @Value("${crm.auth.default-username}")
     private String defaultUsername;
 
-    @Value("${crm.auth.default-password:admin123}")
+    @Value("${crm.auth.default-password}")
     private String defaultPassword;
 
     @Override
