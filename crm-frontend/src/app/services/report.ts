@@ -12,6 +12,8 @@ export interface ReportSummary {
   closedContacts: number;
   conversionRate: number;
   needsFollowUp: number;
+  closedRevenue: number;
+  pipelineValue: number;
   contactsByStatus: Record<string, number>;
   topCompanies: CompanyCount[];
 }

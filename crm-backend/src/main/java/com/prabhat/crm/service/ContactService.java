@@ -45,6 +45,7 @@ public class ContactService {
         contact.setEmail(updatedContact.getEmail());
         contact.setPhone(updatedContact.getPhone());
         contact.setCompany(updatedContact.getCompany());
+        contact.setDealValue(updatedContact.getDealValue());
         return applyRules(contactRepository.save(contact));
     }
 

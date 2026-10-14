@@ -1,9 +1,12 @@
 package com.prabhat.crm.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,6 +28,11 @@ public class Contact {
 
     private String phone;
     private String company;
+
+    @PositiveOrZero(message = "Deal value cannot be negative")
+    @Digits(integer = 10, fraction = 2, message = "Deal value can have at most 10 digits and 2 decimals")
+    @Column(precision = 12, scale = 2)
+    private BigDecimal dealValue;
 
     @Enumerated(EnumType.STRING)
     private ContactStatus status = ContactStatus.NEW;
@@ -53,6 +61,9 @@ public class Contact {
 
     public String getCompany() { return company; }
     public void setCompany(String company) { this.company = company; }
+
+    public BigDecimal getDealValue() { return dealValue; }
+    public void setDealValue(BigDecimal dealValue) { this.dealValue = dealValue; }
 
     // Older rows have no status in the DB yet, so treat "empty" as NEW
     public ContactStatus getStatus() {

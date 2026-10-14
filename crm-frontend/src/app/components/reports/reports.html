@@ -22,6 +22,14 @@
       <span class="value">{{ s.needsFollowUp }}</span>
       <span class="label">Need follow-up</span>
     </div>
+    <div class="card money">
+      <span class="value">{{ s.closedRevenue | number: '1.0-2' }}</span>
+      <span class="label">Closed revenue</span>
+    </div>
+    <div class="card money">
+      <span class="value">{{ s.pipelineValue | number: '1.0-2' }}</span>
+      <span class="label">Open pipeline value</span>
+    </div>
   </div>
 
   <h3>Contacts by status</h3>

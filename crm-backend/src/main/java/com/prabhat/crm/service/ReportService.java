@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,17 @@ public class ReportService {
                 .filter(Contact::isNeedsFollowUp)
                 .count();
 
+        BigDecimal closedRevenue = orZero(contactRepository.sumDealValueByStatus(ContactStatus.CLOSED));
+        BigDecimal pipelineValue = orZero(contactRepository.sumDealValueExcludingStatus(ContactStatus.CLOSED));
+
         List<CompanyCount> topCompanies = contactRepository.findTopCompanies(PageRequest.of(0, 5));
 
-        return new ReportSummary(total, closed, conversionRate, needsFollowUp, byStatus, topCompanies);
+        return new ReportSummary(total, closed, conversionRate, needsFollowUp,
+                closedRevenue, pipelineValue, byStatus, topCompanies);
+    }
+
+    // SQL sum() gives null when there is nothing to add up; show 0 instead
+    private BigDecimal orZero(BigDecimal value) {
+        return value == null ? BigDecimal.ZERO : value;
     }
 }

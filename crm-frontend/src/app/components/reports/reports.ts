@@ -1,10 +1,12 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { ReportService, ReportSummary } from '../../services/report';
 import { CONTACT_STATUSES } from '../../services/contact';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
+  imports: [DecimalPipe],
   templateUrl: './reports.html',
   styleUrl: './reports.css'
 })

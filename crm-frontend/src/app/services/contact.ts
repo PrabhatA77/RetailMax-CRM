@@ -17,6 +17,7 @@ export interface Contact {
   email: string;
   phone?: string;
   company?: string;
+  dealValue?: number | null;
   status?: ContactStatus;
   statusChangedAt?: string | null;
   needsFollowUp?: boolean;

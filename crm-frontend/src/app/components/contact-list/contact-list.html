@@ -5,6 +5,15 @@
   <input [(ngModel)]="email" name="contactEmail" placeholder="Email" autocomplete="off" />
   <input [(ngModel)]="phone" name="contactPhone" placeholder="Phone" autocomplete="off" />
   <input [(ngModel)]="company" name="contactCompany" placeholder="Company" autocomplete="off" />
+  <input
+    [(ngModel)]="dealValue"
+    name="contactDealValue"
+    type="number"
+    min="0"
+    step="0.01"
+    placeholder="Deal value"
+    autocomplete="off"
+  />
   <button type="submit">{{ editingId() === null ? 'Add Contact' : 'Save Changes' }}</button>
   @if (editingId() !== null) {
     <button type="button" (click)="cancelEdit()">Cancel</button>
@@ -19,9 +28,16 @@
   <p class="banner">{{ followUpCount() }} contact(s) need a follow-up (no recent status change).</p>
 }
 
-<div class="filter">
+<div class="toolbar">
+  <input
+    class="search"
+    [(ngModel)]="searchTerm"
+    name="search"
+    placeholder="Search name, email or company"
+    autocomplete="off"
+  />
   <label>
-    Filter by status:
+    Status:
     <select [(ngModel)]="statusFilter" name="statusFilter">
       <option value="ALL">All</option>
       @for (s of statuses; track s.value) {
@@ -29,17 +45,24 @@
       }
     </select>
   </label>
+  <span class="count">Showing {{ filteredContacts().length }} of {{ contacts().length }}</span>
+  <button type="button" class="export" (click)="exportCsv()" [disabled]="filteredContacts().length === 0">
+    Export CSV
+  </button>
 </div>
 
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Email</th>
+      <th class="sortable" (click)="sortBy('name')">Name{{ sortIndicator('name') }}</th>
+      <th class="sortable" (click)="sortBy('email')">Email{{ sortIndicator('email') }}</th>
       <th>Phone</th>
-      <th>Company</th>
+      <th class="sortable" (click)="sortBy('company')">Company{{ sortIndicator('company') }}</th>
+      <th class="sortable" (click)="sortBy('dealValue')">Deal value{{ sortIndicator('dealValue') }}</th>
       <th>Status</th>
-      <th>Last status change</th>
+      <th class="sortable" (click)="sortBy('statusChangedAt')">
+        Last status change{{ sortIndicator('statusChangedAt') }}
+      </th>
       <th></th>
     </tr>
   </thead>
@@ -50,6 +73,11 @@
         <td>{{ contact.email }}</td>
         <td>{{ contact.phone }}</td>
         <td>{{ contact.company }}</td>
+        <td>
+          @if (contact.dealValue != null) {
+            {{ contact.dealValue | number: '1.0-2' }}
+          }
+        </td>
         <td>
           <select
             class="status"
@@ -78,7 +106,7 @@
         </td>
       </tr>
     } @empty {
-      <tr><td colspan="7">No contacts found.</td></tr>
+      <tr><td colspan="8">No contacts found.</td></tr>
     }
   </tbody>
 </table>
