@@ -1,7 +1,11 @@
-<nav>
-  <span class="brand">RetailMax CRM</span>
-  <a routerLink="/contacts" routerLinkActive="active">Contacts</a>
-  <a routerLink="/reports" routerLinkActive="active">Reports</a>
-</nav>
+@if (auth.isLoggedIn()) {
+  <nav>
+    <span class="brand">RetailMax CRM</span>
+    <a routerLink="/contacts" routerLinkActive="active">Contacts</a>
+    <a routerLink="/reports" routerLinkActive="active">Reports</a>
+    <span class="user">{{ auth.username() }}</span>
+    <button type="button" (click)="auth.logout()">Logout</button>
+  </nav>
+}
 
 <router-outlet />

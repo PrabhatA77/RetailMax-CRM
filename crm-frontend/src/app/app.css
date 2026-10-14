@@ -25,3 +25,13 @@ nav a.active {
   background: #e8f0fe;
   color: #1a56c4;
 }
+
+.user {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+nav button {
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
